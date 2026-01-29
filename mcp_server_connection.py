@@ -6,7 +6,7 @@ import urllib.request
 import json
 from datetime import datetime
 # Webhook
-N8N_WEBHOOK_URL = "http://localhost:5678/webhook/notificacion"
+N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/notificacion"
 mcp = FastMCP("N8N Backup Manager")
 BASE_DIR = Path(__file__).parent
 SCRIPT_PATH = BASE_DIR / "backup_n8ndb.py"

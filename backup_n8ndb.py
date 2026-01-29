@@ -8,11 +8,11 @@ from datetime import datetime
 # VARIABLES DE ENTORNO (A COMPLETAR POR TI)
 # =========================
 # TODO: debes definir/asegurar estas variables de entorno (DB_POSTGRESDB_...)
-DB_HOST = os.getenv("DB_POSTGRESDB_HOST") # <-- debe existir en el entorno
-DB_PORT = os.getenv("DB_POSTGRESDB_PORT") # <-- debe existir en el entorno
-DB_NAME = os.getenv("DB_POSTGRESDB_DATABASE") # <-- debe existir en el entorno
-DB_USER = os.getenv("DB_POSTGRESDB_USER") # <-- debe existir en el entorno
-DB_PASSWORD = os.getenv("DB_POSTGRESDB_PASSWORD") # <-- debe existir en el entorno
+DB_HOST = os.getenv("postgres") # <-- debe existir en el entorno
+DB_PORT = os.getenv("5432") # <-- debe existir en el entorno
+DB_NAME = os.getenv("n8ndb") # <-- debe existir en el entorno
+DB_USER = os.getenv("postgres") # <-- debe existir en el entorno
+DB_PASSWORD = os.getenv("Monlau2025") # <-- debe existir en el entorno
 # Directorio donde se guardarán los .sql (el alumno puede elegir la ruta)
 BACKUP_DIR = Path(os.getenv("BACKUP_DIR", str(Path.home() / "backups_n8n")))
 BACKUP_DIR.mkdir(parents=True, exist_ok=True)
