@@ -12,6 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/database.sql # <--- AÑADE ESTO
   n8n:
     image: n8nio/n8n:latest
     container_name: n8n
