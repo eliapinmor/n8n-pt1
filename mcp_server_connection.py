@@ -6,11 +6,11 @@ import urllib.request
 import json
 from datetime import datetime
 # Webhook
-N8N_WEBHOOK_URL = "http://localhost:5678/webhook/notificacion"
+N8N_WEBHOOK_URL = "http://localhost:5678/webhook-test/notificacion"
 mcp = FastMCP("N8N Backup Manager")
 BASE_DIR = Path(__file__).parent
 SCRIPT_PATH = BASE_DIR / "backup_n8ndb.py"
-BACKUPS_DIR = BASE_DIR / "backups_n8n"
+BACKUPS_DIR = BASE_DIR / "backups"
 def notificar_a_n8n(es_exito: bool, detalle: str):
     try:
         payload = {
@@ -32,27 +32,31 @@ def realizar_backup_manual() -> str:
     if not SCRIPT_PATH.exists():
         return "❌ Error: Script de backup no encontrado."
     try:
+        # Usamos shell=True para que Windows gestione mejor la ejecución
         result = subprocess.run(
             [sys.executable, str(SCRIPT_PATH)],
             capture_output=True,
-            text=True
+            text=True,
+            encoding='utf-8',
+            errors='replace',
+            shell=False # Asegúrate de que esto sea False en Windows para usar el sys.executable directamente
         )
+        
         salida = result.stdout.strip()
+        error = result.stderr.strip()
+        
         if result.returncode == 0:
-            mensaje = (
-                "✅ Backup OK\n"
-                f"{salida}\n"
-                f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-            )
+            mensaje = f"✅ Backup OK\n{salida}"
             notificar_a_n8n(True, mensaje)
             return mensaje
         else:
-            error = result.stderr.strip()
-            mensaje = f"❌ Backup ERROR\n{error}"
+            # Si falló, queremos ver el error de Postgres aunque tenga caracteres raros
+            mensaje = f"❌ Backup ERROR de Script:\n{error}"
             notificar_a_n8n(False, mensaje)
             return mensaje
+            
     except Exception as e:
-        mensaje = f"❌ Error crítico: {str(e)}"
+        mensaje = f"❌ Error crítico en el Servidor MCP: {str(e)}"
         notificar_a_n8n(False, mensaje)
         return mensaje
 
